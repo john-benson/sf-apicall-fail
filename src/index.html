@@ -31,9 +31,7 @@
         const res = getJsonFromUrl(window.location.hash);
         const pieces = res.id.split('/');
         const userId = pieces[pieces.length - 1];
-        const apiCallUrl = 'https://qa-dc311-qa.cs33.my.salesforce.com' +
-        '/services/data/v36.0/query?' +
-        `q=SELECT Id FROM User WHERE Id = '${userId}'`
+        const apiCallUrl = 'https://qa-dc311-qa.cs33.force.com/Citizen/services/data/v36.0'
 
         fetch(apiCallUrl, { headers: { 'Authorization': `Bearer ${res.access_token}`}})
           .then(res => {
