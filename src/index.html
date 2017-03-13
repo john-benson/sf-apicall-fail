@@ -1,0 +1,59 @@
+<html>
+  <head></head>
+    <script>
+      const getJsonFromUrl = (hash) => {
+        var query = hash.substr(1);
+        var result = {};
+        query.split("&").forEach(function(part) {
+          var item = part.split("=");
+          result[item[0]] = decodeURIComponent(item[1]);
+        });
+        return result;
+      }
+
+      const loginCall = () => {
+        return new Promise((resolve, rej) => {
+          const loginUrl = 'https://qa-dc311-qa.cs33.force.com/Citizen' +
+          '/services/oauth2/authorize?' +
+          'display=touch&' +
+          'response_type=token&' +
+          'client_id=3MVG9Zdl7Yn6QDKN_3J5abl.MlUQ939a2xawTC7p1Y8jpqCpPORh5Wp5cQHU_B31n7shXV6_WsWhMoqYVXf8K&' +
+          `redirect_uri=${window.location.protocol}//${window.location.host}`;
+
+          const w = window.open(loginUrl, '_self');
+
+        });
+      };
+
+      if(window.location.hash == '') {
+        loginCall();
+      } else {
+        const res = getJsonFromUrl(window.location.hash);
+        const pieces = res.id.split('/');
+        const userId = pieces[pieces.length - 1];
+        const apiCallUrl = 'https://qa-dc311-qa.cs33.my.salesforce.com' +
+        '/services/data/v36.0/query?' +
+        `q=SELECT Id FROM User WHERE Id = '${userId}'`
+
+        fetch(apiCallUrl, { headers: { 'Authorization': `Bearer ${res.access_token}`}})
+          .then(res => {
+            if(res.status === 200) {
+              return res.json();
+            }
+
+            return null;
+          })
+          .then(res => {
+            document.body.innerHTML = JSON.stringify(res, null, 2);
+          })
+          .catch(res => {
+            document.body.innerHTML = 'An error occured : ' + res;
+          });
+      }
+
+    </script>
+
+  <body>
+    Waiting for data...
+  </body>
+</html>
