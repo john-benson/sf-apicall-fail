@@ -13,7 +13,7 @@
 
       const loginCall = () => {
         return new Promise((resolve, rej) => {
-          const loginUrl = 'https://qa-dc311-qa.cs33.force.com/Citizen' +
+          const loginUrl = 'https://qa-ouc-dc311.cs32.force.com/Citizen' +
           '/services/oauth2/authorize?' +
           'display=touch&' +
           'response_type=token&' +
@@ -31,7 +31,7 @@
         const res = getJsonFromUrl(window.location.hash);
         const pieces = res.id.split('/');
         const userId = pieces[pieces.length - 1];
-        const apiCallUrl = 'https://qa-dc311-qa.cs33.force.com/Citizen/services/data/v36.0'
+        const apiCallUrl = 'https://dc311--qa.cs32.my.salesforce.com/services/data/v36.0'
 
         fetch(apiCallUrl, { headers: { 'Authorization': `Bearer ${res.access_token}`}})
           .then(res => {
